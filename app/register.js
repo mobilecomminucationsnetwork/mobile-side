@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
+// Import register function from authApi
+import { register } from './authApi';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -45,8 +47,19 @@ export default function Register() {
     setIsRegistering(true);
 
     try {
-      // Mock API call for registration
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Create user data object with all required fields
+      const userData = {
+        username: email, // Using email as username
+        email: email,
+        password: password,
+        password2: password, // Add confirmation password
+        name: name, // This will be split in the register function
+        first_name: name.split(' ')[0], // Add first name
+        last_name: name.split(' ').slice(1).join(' '), // Add last name
+      };
+      
+      // Call register API
+      await register(userData);
       
       Alert.alert(
         'Registration Successful',
@@ -55,7 +68,10 @@ export default function Register() {
       );
     } catch (error) {
       console.error('Registration error:', error);
-      Alert.alert('Registration Failed', 'Unable to create your account. Please try again.');
+      Alert.alert(
+        'Registration Failed', 
+        error.message || 'Unable to create your account. Please try again.'
+      );
     } finally {
       setIsRegistering(false);
     }

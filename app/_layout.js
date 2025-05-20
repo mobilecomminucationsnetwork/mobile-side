@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Stack } from "expo-router";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
-import { useAuth } from "./context/AuthContext";
+import websocketService from "./services/websocketService";
+import notificationHandler from "./utils/NotificationHandler";
 
 // Wrap the app with AuthProvider
 export default function RootLayout() {
@@ -15,7 +16,10 @@ export default function RootLayout() {
 
 // Navigation component that handles routing based on auth state
 function RootLayoutNav() {
-  const { isLoading, isLoggedIn } = useAuth();
+  const { isLoading } = useAuth();
+
+  // Initialize WebSocket connection - only when actually logged in via manual login
+  // This will now be handled in the login/dashboard screens instead of here
 
   if (isLoading) {
     return (
@@ -26,12 +30,12 @@ function RootLayoutNav() {
   }
 
   return (
-    <Stack 
+    <Stack
       screenOptions={{
         headerShown: false,
         animation: "slide_from_right",
       }}
-      initialRouteName={isLoggedIn ? "dashboard" : "index"}
+      initialRouteName="index" // Always start at the index page, not dashboard
     />
   );
 }
@@ -39,8 +43,8 @@ function RootLayoutNav() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fd',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f8f9fd",
   },
 });

@@ -16,6 +16,7 @@ import {
 import { router } from 'expo-router';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import { useAuth } from './context/AuthContext';
+import { login as loginApi } from './authApi';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -34,22 +35,21 @@ export default function Login() {
     setIsLoggingIn(true);
 
     try {
-      // Mock API call for login
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Use the login API call
+      const response = await loginApi(email, password);
       
-      // Login with user data
-      const userData = {
-        email,
-        name: email.split('@')[0], // simple mock name from email
-      };
-      
-      await login(userData);
+      // Update auth context with user data AND tokens
+      await login(response.user, response.tokens);
       
       // Navigate to dashboard
       router.replace('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
-      Alert.alert('Login Failed', 'Invalid email or password. Please try again.');
+      // Show appropriate error message
+      Alert.alert(
+        'Login Failed', 
+        error.message || 'Invalid email or password. Please try again.'
+      );
     } finally {
       setIsLoggingIn(false);
     }

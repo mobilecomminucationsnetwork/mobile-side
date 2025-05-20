@@ -1,11 +1,23 @@
 {
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-converter": "^4.22.0",
+    "@tensorflow/tfjs-react-native": "^1.0.0",
+    "axios": "^1.9.0",
     "expo": "^53.0.9",
-    "expo-camera": "^16.1.6",
+    "expo-camera": "~16.1.6",
+    "expo-constants": "~17.1.6",
+    "expo-gl": "^15.1.5",
+    "expo-image-manipulator": "^13.1.7",
+    "expo-linking": "~7.1.5",
     "expo-router": "^5.0.6",
+    "face-api.js": "^0.22.2",
     "react": "19.0.0",
-    "react-native": "0.79.2"
+    "react-native": "0.79.2",
+    "react-native-fs": "^2.20.0",
+    "react-native-safe-area-context": "^5.4.0",
+    "react-native-screens": "~4.10.0"
   },
   "main": "expo-router/entry",
   "scripts": {
@@ -13,5 +25,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
+  },
+  "devDependencies": {
+    "@types/react": "~19.0.10",
+    "typescript": "~5.8.3"
   }
 }
